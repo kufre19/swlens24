@@ -1,8 +1,8 @@
 version: "3.1"
 services:
   app:
-    image: elsidom_mkt_bot 
-    container_name: elsdiom_bot
+    image: swlens24 
+    container_name: swlens24_bot
     build: 
       context: .
       dockerfile: .
@@ -14,7 +14,7 @@ services:
       - ./:/var/www/html
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - elsidom_mkt_bot
+      - swlens24
 
     command: "php artisan serve --host=0.0.0.0 --port=8000"
 
@@ -22,15 +22,15 @@ services:
 
   db:
     image: mysql:latest
-    container_name: mysql_db_elsdiom_bot
+    container_name: mysql_db_swlens24
     restart: "no"
     environment:
       MYSQL_ROOT_PASSWORD: admin
     volumes:
-      - db_data_elsdiom_bot:/docker-entrypoint-initdb.d
-      - db_data_elsdiom_bot:/var/lib/mysql
+      - db_data_swlens24:/docker-entrypoint-initdb.d
+      - db_data_swlens24:/var/lib/mysql
     networks:
-      - elsidom_mkt_bot
+      - swlens24
    
   
   phpmyadmin:
@@ -41,13 +41,13 @@ services:
     environment:
       - PMA_ARBITRARY=1
     networks:
-      - elsidom_mkt_bot
+      - swlens24
 
 
 networks:
-  elsidom_mkt_bot:
+  swlens24:
     driver: bridge
 
 
 volumes:
-  db_data_elsdiom_bot:
+  db_data_swlens24:
