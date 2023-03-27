@@ -1,0 +1,53 @@
+version: "3.1"
+services:
+  app:
+    image: elsidom_mkt_bot 
+    container_name: elsdiom_bot
+    build: 
+      context: .
+      dockerfile: .
+    restart: "no"
+    ports:
+      - 80:80
+      - 8000:8000
+    volumes:
+      - ./:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - elsidom_mkt_bot
+
+    command: "php artisan serve --host=0.0.0.0 --port=8000"
+
+   
+
+  db:
+    image: mysql:latest
+    container_name: mysql_db_elsdiom_bot
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    volumes:
+      - db_data_elsdiom_bot:/docker-entrypoint-initdb.d
+      - db_data_elsdiom_bot:/var/lib/mysql
+    networks:
+      - elsidom_mkt_bot
+   
+  
+  phpmyadmin:
+    image: phpmyadmin:5.2.0-apache
+    restart: "no"
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - elsidom_mkt_bot
+
+
+networks:
+  elsidom_mkt_bot:
+    driver: bridge
+
+
+volumes:
+  db_data_elsdiom_bot:
