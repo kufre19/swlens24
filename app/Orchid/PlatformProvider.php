@@ -40,18 +40,18 @@ class PlatformProvider extends OrchidServiceProvider
 
 
             Menu::make('Broadcast Events')
-                ->title('Form controls')
+                // ->title('Form controls')
                 ->icon('note')
-                ->route('platform.example.fields'),
+                ->url('#'),
 
-            Menu::make(' Events')
-                ->title('Form controls')
+            Menu::make(' Week Portion Setting')
+                // ->title('Form controls')
                 ->icon('note')
-                ->route('platform.example.fields'),
+                ->url('#'),
 
-            // Menu::make('Advanced Elements')
-            //     ->icon('briefcase')
-            //     ->route('platform.example.advanced'),
+            Menu::make('Schedule Menu Settings')
+                ->icon('briefcase')
+                ->url('#'),
 
             // Menu::make('Text Editors')
             //     ->icon('list')
