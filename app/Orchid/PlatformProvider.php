@@ -29,20 +29,25 @@ class PlatformProvider extends OrchidServiceProvider
     public function registerMainMenu(): array
     {
         return [
-            Menu::make('Chat App')
-                ->icon('bubble')
-                ->url('chatify')
-                ->permission('platform.systems.users')
-                ->badge(function () {
-                    $unreadCount = 0;
-                    return $unreadCount;
-                }),
+            // Menu::make('Chat App')
+            //     ->icon('bubble')
+            //     ->url('chatify')
+            //     ->permission('platform.systems.users')
+            //     ->badge(function () {
+            //         $unreadCount = 0;
+            //         return $unreadCount;
+            //     }),
 
-            
-            // Menu::make('Basic Elements')
-            //     ->title('Form controls')
-            //     ->icon('note')
-            //     ->route('platform.example.fields'),
+
+            Menu::make('Broadcast Events')
+                ->title('Form controls')
+                ->icon('note')
+                ->route('platform.example.fields'),
+
+            Menu::make(' Events')
+                ->title('Form controls')
+                ->icon('note')
+                ->route('platform.example.fields'),
 
             // Menu::make('Advanced Elements')
             //     ->icon('briefcase')
@@ -52,7 +57,7 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->icon('list')
             //     ->route('platform.exacommentmple.editors'),
 
-           
+
             // Menu::make('Chart tools')
             //     ->icon('bar-chart')
             //     ->route('platform.example.charts'),
@@ -65,13 +70,13 @@ class PlatformProvider extends OrchidServiceProvider
 
 
 
-            Menu::make(__('Employees'))
+            Menu::make(__('User Settings'))
                 ->icon('user')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
                 ->title(__('Access rights')),
 
-           
+
         ];
     }
 
