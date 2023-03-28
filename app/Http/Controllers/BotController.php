@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\WaUser;
 use App\Traits\GeneralFunctions;
 use App\Traits\HandleButton;
 use App\Traits\HandleCart;
@@ -111,8 +112,8 @@ class BotController extends Controller
             return $this->verify_bot($request);
         }
 
-        // $this->fetch_user();
-        $this->fetch_user_session();
+        $this->fetch_user();
+        // $this->fetch_user_session();
         switch ($this->message_type) {
             case 'text':
                 $this->text_index();
@@ -155,7 +156,7 @@ class BotController extends Controller
 
     public function fetch_user()
     {
-        $model = new User();
+        $model = new WaUser();
         $fetch = $model->where('whatsapp_id',$this->userphone)->first();
         if(!$fetch)
         {
@@ -170,7 +171,7 @@ class BotController extends Controller
 
     public function register_user()
     {
-        $model = new User();
+        $model = new WaUser();
         $model->name = $this->username;
         $model->whatsapp_id = $this->userphone;
         $model->save();

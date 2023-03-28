@@ -17,9 +17,7 @@ trait SendMessage
     {
         $company_name = env('APP_NAME');
         $text = <<<MSG
-        Hello $this->username, I'm the Customer Support Bot for $company_name.
-        
-        Please select an Item from our menu.
+        Hello $this->username, I'm the Hebrew assistant bot.
         MSG;
         $this->send_post_curl($this->make_text_message($text));
         die;
