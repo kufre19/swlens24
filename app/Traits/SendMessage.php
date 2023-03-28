@@ -20,7 +20,7 @@ trait SendMessage
         Hello $this->username, I'm the Hebrew assistant bot.
         MSG;
         $this->send_post_curl($this->make_text_message($text));
-        die;
+        
     }
 
 

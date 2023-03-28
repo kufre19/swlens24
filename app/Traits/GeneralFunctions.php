@@ -11,8 +11,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Facades\Excel;
-
-
+use App\Constants\SessionConstants;
 
 trait GeneralFunctions
 {
@@ -44,12 +43,32 @@ trait GeneralFunctions
         $this->go_to_next_step();
         die;
     }
-    public function say_to_user($value = "")
+    /**
+     * send a constructed message to user as response
+     * @param mixed $value contains the message
+     * @param int optional $go_to_next_step let bot know to continue, enter 0 to go back to previous step
+     * 
+     */
+    public function say_to_user($value = "",$go_to_next_step=1)
     {
         $message = $this->make_text_message($value);
         $this->send_post_curl($message);
-        $this->go_to_next_step();
+        if($go_to_next_step == 1)
+        {
+            $this->go_to_next_step();
+        }elseif ($go_to_next_step == 0){
+            $this->go_to_previous_step();
+            $this->continue_session_step();
+
+        }elseif ($go_to_next_step == 2){
+            $this->go_to_next_step();
+            die;
+        }else{
+            die;
+        }
     }
+
+   
 
     public function store_answer($value = "")
     {
@@ -159,10 +178,82 @@ trait GeneralFunctions
         return $file;
     }
 
+    /**
+     * this will first ask user for details to be stored
+     * 
+     * @param int $a nothing
+     * 
+     * 
+     * 
+     */
+
+    public function run_the_following($value=null)
+    {
+        foreach ($value as $key => $function) {
+            $this->$function();
+        }
+
+    }
+
+    /**
+     * this will accept an array value to be sent as menu to be selected with text response and 
+     * then list of option stored to session
+     * @param array $value 
+     *  */
+
+    public function send_option_menu($value=null)
+    {
+       
+        $menu_message = $value['menu'];
+        $expected_options = $value['expected_options'];
+        $this->user_session_data[HandleSession::$EXPECTED_RESPONSES] = $expected_options;
+        $this->update_session($this->user_session_data);
+        $this->say_to_user($menu_message,2);
+
+        // $this->continue_session_step();
+
+    }
+
+
+    public function check_for_expected_response($value=null)
+    {
+        // dd("ere");
+
+        $expected_options =  $this->user_session_data[HandleSession::$EXPECTED_RESPONSES];
+        $user_response = $this->user_message_original;
+
+        if(is_array($expected_options))
+        {
+            if(!in_array($user_response,$expected_options))
+            {
+                $text = "Please select an option from the menu!";
+                $this->say_to_user($text,0);
+            }else{
+                // do the select option
+                $this->go_to_next_step();
+                $this->continue_session_step();
+            }
+        }
+
+    }
+
     public function end_steps($value = "")
     {
-        $this->say_to_user($value);
-        $this->update_session();
-        die;
+        if($value['text']!= "")
+        {
+            $this->say_to_user($value['text']);
+        }
+        if($value['next_journey'] != "")
+        {
+            $next_journey = $value['next_journey'];
+            $this->$next_journey();
+            $this->run_action_session();
+
+        }else{
+            $this->update_session();
+            die;
+
+        }
+        
     }
 }

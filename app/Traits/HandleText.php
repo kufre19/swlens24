@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 
 trait HandleText
 {
-    use HandleButton, SendMessage,CreateActionsSession;
+    use HandleButton, SendMessage;
 
     public $text_intent;
 
@@ -16,6 +16,8 @@ trait HandleText
         $this->find_text_intent();
         if ($this->text_intent == "greetings") {
             $this->send_greetings_message($this->userphone);
+            $this->GetScheduleMenu();
+            $this->run_action_session();
         }
         if ($this->text_intent == "run_action_steps") {
             $this->continue_session_step();

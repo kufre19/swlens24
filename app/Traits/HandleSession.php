@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 trait HandleSession
 {
    
+    public static $EXPECTED_RESPONSES = "expected_response";
 
     /*
     Session codes
@@ -56,6 +57,10 @@ trait HandleSession
         }
     }
 
+    /**
+     * update user session by passing in a session data or leave it empty to reset
+     * 
+     */
     public function update_session($data = null)
     {
         if ($data == null) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\WaUser;
+use App\Traits\CreateActionsSession;
 use App\Traits\GeneralFunctions;
 use App\Traits\HandleButton;
 use App\Traits\HandleCart;
@@ -15,10 +16,11 @@ use App\Traits\MessagesType;
 use App\Traits\SendMessage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use App\Constants;
 
 class BotController extends Controller
 {
-    use HandleText, HandleButton, HandleMenu, SendMessage, MessagesType, HandleSession,GeneralFunctions,HandleImage;
+    use HandleText, HandleButton, HandleMenu, SendMessage, MessagesType, HandleSession,GeneralFunctions,HandleImage,CreateActionsSession;
 
     public $user_message_original;
     public $user_message_lowered;
@@ -172,11 +174,12 @@ class BotController extends Controller
     public function register_user()
     {
         $model = new WaUser();
-        $model->name = $this->username;
         $model->whatsapp_id = $this->userphone;
         $model->save();
-        $this->start_new_session();
         $this->send_greetings_message();
+        $this->start_new_session();
+        $this->getUserData();
+        $this->run_action_session();
 
     }
 
