@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Controllers\ScheduleMenuController;
 use App\Orchid\Screens\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -13,6 +14,7 @@ use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\ScheduleMenuScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -34,6 +36,19 @@ use Tabuna\Breadcrumbs\Trail;
 Route::get('/', function () {
     return redirect()->to("admin");
 });
+
+
+/* 
+Customized routes goes here
+*/
+
+Route::get("schedule-menu",[ScheduleMenuController::class,"index"])->name("platform.schedule-menus");
+Route::post("schedule-menu/save",[ScheduleMenuController::class,"save"])->name("platform.schedule-menus-save");
+Route::get("schedule-menu/list",[ScheduleMenuController::class,"list_menu_items"])->name("platform.schedule-menus-list");
+Route::get("schedule-menu/edit/{id}",[ScheduleMenuController::class,"edit_menu_item"])->name("platform.schedule-menus-edit");
+Route::post("schedule-menu/edit/save",[ScheduleMenuController::class,"save_edit_menu_item"])->name("platform.schedule-menus-save_edit");
+
+
 
 
 /*
@@ -123,15 +138,17 @@ Route::screen('example', ExampleScreen::class)
             ->push('Example screen');
     });
 
-Route::screen('example-fields', ExampleFieldsScreen::class)->name('platform.example.fields');
-Route::screen('example-layouts', ExampleLayoutsScreen::class)->name('platform.example.layouts');
-Route::screen('example-charts', ExampleChartsScreen::class)->name('platform.example.charts');
-Route::screen('example-editors', ExampleTextEditorsScreen::class)->name('platform.example.editors');
-Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.example.cards');
-Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
+// Route::screen('example-fields', ExampleFieldsScreen::class)->name('platform.example.fields');
+// Route::screen('example-layouts', ExampleLayoutsScreen::class)->name('platform.example.layouts');
+// Route::screen('example-charts', ExampleChartsScreen::class)->name('platform.example.charts');
+// Route::screen('example-editors', ExampleTextEditorsScreen::class)->name('platform.example.editors');
+// Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.example.cards');
+// Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
 
 //Route::screen('idea', 'Idea::class','platform.screens.idea');
 
+
+Route::screen("schedule-menu", ScheduleMenuScreen::class)->name("platform.schedule-menus");
 
 /*
 |--------------------------------------------------------------------------

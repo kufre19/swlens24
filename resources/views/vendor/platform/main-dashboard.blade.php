@@ -20,7 +20,7 @@
         <div class="col-md-10 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">User Data</h4>
+                    <h4 class="card-title">BroadCast An Event</h4>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="#">

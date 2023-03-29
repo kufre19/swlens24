@@ -42,7 +42,7 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Broadcast Events')
                 // ->title('Form controls')
                 ->icon('note')
-                ->url('#'),
+                ->route('platform.main'),
 
             Menu::make(' Week Portion Setting')
                 // ->title('Form controls')
@@ -51,7 +51,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('Schedule Menu Settings')
                 ->icon('briefcase')
-                ->url('#'),
+                ->route('platform.schedule-menus'),
 
             // Menu::make('Text Editors')
             //     ->icon('list')
