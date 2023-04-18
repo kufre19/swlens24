@@ -117,6 +117,11 @@ trait HandleSession
        }
 
     }
+
+    public function get_stored_answer($key)
+    {
+
+    }
     public function remove_object_from_session($key="")
     {
         unset($this->user_session_data[$key]);
@@ -176,11 +181,20 @@ trait HandleSession
     {
         $session = $this->user_session_data;
         $current_step_count = $session['current_step'];
-        $current_step_to_run = $session['steps'][$current_step_count];
-        $current_action_type = $current_step_to_run['action_type'];
-        $current_action_value = $current_step_to_run['value'];
+        // $current_step_to_run = $session['steps'][$current_step_count];
+        // $current_action_type = $current_step_to_run['action_type'];
+        // $current_action_value = $current_step_to_run['value'];
 
-        $this->$current_action_type($current_action_value);
+        $namespace = '\App\Http\Controllers\BotAbilities\\';
+        $class_name = $session['step_name'];
+    
+        // Combine the namespace and class name into a fully qualified class name
+        $fully_qualified_class_name = $namespace . $class_name;
+    
+        // Create an object of the class/
+        $obj = new $fully_qualified_class_name($this->userphone,$this->username,$this->user_message_original);
+        $obj->set_properties($this->user_session_data,"user_session_data");
+        $obj->call_method($session['current_step']);
         
     }
 

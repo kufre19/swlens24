@@ -18,8 +18,10 @@ use App\Orchid\Screens\ScheduleMenuScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use Orchid\Platform\Models\Role;
 // use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
+use App\Http\Controllers\BotAbilities;
 
 
 /*
@@ -37,6 +39,22 @@ Route::get('/', function () {
     return redirect()->to("admin");
 });
 
+
+Route::get("test", function(){
+
+    // $namespace = '\App\Http\Controllers\BotAbilities\\';
+    // $class_name = 'Main';
+
+    // // Combine the namespace and class name into a fully qualified class name
+    // $fully_qualified_class_name = $namespace . $class_name;
+
+    // // Create an object of the class
+    // $obj = new $fully_qualified_class_name();
+
+
+    // return $obj->test();
+
+});
 
 /* 
 Customized routes goes here

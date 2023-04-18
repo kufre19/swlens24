@@ -70,32 +70,31 @@ trait CreateActionsSession
 
     }
 
-    public function GetScheduleMenu()
-    {
-        $menu_message = <<<MSG
-        1. Shabbat candle lighting
-        2. Holidays
-        3. Fasts
-        4. Daily prayer
-        MSG;
-        $expected_options = ["1","2","3","4","5"];
-        $session_data = [
-            "step_name"=>"GetScheduleMenu",
-            "answered_questions" => [],
-            "run_action_step"=>1,
-            "current_step" => 0,
-            "next_step" => 1,
-            "last_operation_status"=>0,
-            "steps" => [
-                ["action_type"=>"send_option_menu","value"=>["menu"=>$menu_message,"expected_options"=>$expected_options]],
-                ["action_type"=>"check_for_expected_response","value"=>""],
-                ["action_type"=>"end_steps","value"=>["text"=>"Your Schedule will be sent","next_journey"=>""]],
-            ]
-        ];
+    // public function GetScheduleMenu()
+    // {
+    //     $menu_message = "1. Shabbat candle lighting\n"
+    //     . "2. Holidays\n"
+    //     . "3. Fasts\n"
+    //     . "4. Daily prayer\n";
 
-        return $this->update_session($session_data);
+    //     $expected_options = ["1","2","3","4","5"];
+    //     $session_data = [
+    //         "step_name"=>"GetScheduleMenu",
+    //         "answered_questions" => [],
+    //         "run_action_step"=>1,
+    //         "current_step" => 0,
+    //         "next_step" => 1,
+    //         "last_operation_status"=>0,
+    //         "steps" => [
+    //             ["action_type"=>"send_option_menu","value"=>["menu"=>$menu_message,"expected_options"=>$expected_options]],
+    //             ["action_type"=>"check_for_expected_response","value"=>""],
+    //             ["action_type"=>"end_steps","value"=>["text"=>"Your Schedule will be sent","next_journey"=>""]],
+    //         ]
+    //     ];
 
-    }
+    //     return $this->update_session($session_data);
+
+    // }
 
 
     

@@ -13,7 +13,7 @@
    <x-orchid-icon path="orchid" width="1.2em" height="1.2em"/>
 
     <p class="ms-3 my-0 d-none d-sm-block">
-        Swlens BOT
-        <small class="align-top opacity">manager</small>
+        {{env("APP_NAME")}}
+        <small class="align-top opacity"></small>
     </p>
 </div>
