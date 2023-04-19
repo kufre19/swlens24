@@ -33,7 +33,7 @@ class BotController extends Controller
     public $user_session_data;
     public $user_session_status;
     public $wa_image_id;
-  
+
     /* 
     @$menu_item_id holds the id sent back from selecting an item from whatsapp
     @
@@ -43,6 +43,9 @@ class BotController extends Controller
 
     public function __construct(Request $request)
     {
+        $this->store_request_obj($request);
+
+       
         //   $data = json_encode($request->all());
         //     $file = time() .rand(). '_file.json';
         //     $destinationPath=public_path()."/upload/";
@@ -195,6 +198,12 @@ class BotController extends Controller
                         dd();
                     }
                 }
+    }
+
+    public function store_request_obj(Request $request)
+    {
+        session()->put("request_stored",$request);
+      
     }
 
 }

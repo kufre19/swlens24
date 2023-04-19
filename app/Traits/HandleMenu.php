@@ -10,10 +10,8 @@ trait HandleMenu {
     public function menu_index()
     {
        
-
         
     }
-
 
 
 

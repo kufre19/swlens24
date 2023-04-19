@@ -7,7 +7,7 @@ use App\Traits\SendMessage;
 
 class TextMenuSelection extends GeneralFunctions
 {
-    use MessagesType,SendMessage;
+   
 
     public $expected_responses = [];
     public $mapped_responses = [];

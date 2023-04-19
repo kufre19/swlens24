@@ -192,8 +192,8 @@ trait HandleSession
         $fully_qualified_class_name = $namespace . $class_name;
     
         // Create an object of the class/
-        $obj = new $fully_qualified_class_name($this->userphone,$this->username,$this->user_message_original);
-        $obj->set_properties($this->user_session_data,"user_session_data");
+        $obj = new $fully_qualified_class_name();
+        // $obj->set_properties($this->user_session_data,"user_session_data");
         $obj->call_method($session['current_step']);
         
     }

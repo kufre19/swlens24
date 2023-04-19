@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Http\Controllers\BotAbilities\Main;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 trait HandleText
@@ -17,8 +18,8 @@ trait HandleText
         $this->find_text_intent();
         if ($this->text_intent == "greetings") {
             $this->send_greetings_message($this->userphone);
-            $main_ability = new Main($this->userphone,$this->username,$this->user_message_original);
-            $main_ability->GetScheduleMenu($this->userphone,$this->username);
+            $main_ability = new Main();
+            $main_ability->GetScheduleMenu();
             $this->run_action_session();
         }
         if ($this->text_intent == "run_action_steps") {
