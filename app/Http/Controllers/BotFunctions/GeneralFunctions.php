@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers\BotFunctions;
 
+use App\Http\Controllers\BotAbilities\Main;
 use App\Http\Controllers\BotController;
 use Illuminate\Http\Request;
+use stdClass;
 
 
 class GeneralFunctions extends BotController {
@@ -23,7 +25,9 @@ class GeneralFunctions extends BotController {
 
     public function __construct()
     {
+        
         parent::__construct(session()->get("request_stored"));
+        $this->fetch_user_session();
 
     }
 
@@ -35,19 +39,31 @@ class GeneralFunctions extends BotController {
         $this->$property = $value;
     }
 
-    public function set_session($name)
+   
+    public function message_user($message,$phone="")
     {
-        $session_data = [
-            "step_name"=>$name,
-            "answered_questions" => [],
-            "run_action_step"=>1,
-            "current_step" => 0,
-            "next_step" => 1,
-            "last_operation_status"=>0,
-           
-        ];
+        if($phone=="")
+        {
+            $phone = $this->userphone;
+        }
 
-        return $this->update_session($session_data);
+        $text = $this->make_text_message($message,$phone);
+        $this->send_post_curl($text);
+    }
+
+    public function MenuArrayToObj($menu_items_arr)
+    {
+        $obj = new stdClass();
+        foreach ($menu_items_arr as $value) {
+            $obj->{$value} = ['name' => $value];
+        }
+        return $obj;
+    }
+
+    public function backToMainMenu()
+    {
+        $main_obj = new Main;
+        $main_obj->begin_func();
     }
 
     

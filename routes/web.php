@@ -52,7 +52,7 @@ Route::get("test", function(){
     // $obj = new $fully_qualified_class_name();
 
 
-    // return $obj->test();
+    // return $obj::test_main();
 
 });
 
@@ -168,10 +168,3 @@ Route::screen('example', ExampleScreen::class)
 
 Route::screen("schedule-menu", ScheduleMenuScreen::class)->name("platform.schedule-menus");
 
-/*
-|--------------------------------------------------------------------------
-| Dashboard Routes Ends
-|--------------------------------------------------------------------------
-|
-| 
-*/

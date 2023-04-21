@@ -175,6 +175,44 @@ trait HandleSession
         $this->user_session_data = $data;
     }
 
+    /**
+     * should create a new route session with the class that has be initialized or if session is created then change the 
+     * class name and counter only
+     */
+    public function set_session_route($name)
+    {
+        
+        if (isset($this->user_session_data['run_action_step'])) {
+            if ($this->user_session_data['run_action_step'] == 1 ) {
+                $this->change_route_name($name);
+            }
+        }else{
+            $session_data = [
+                "step_name"=>$name,
+                "answered_questions" => [],
+                "run_action_step"=>1,
+                "current_step" => 0,
+                "next_step" => 1,
+                "last_operation_status"=>0,
+                "form_counter"=>0
+               
+            ];
+    
+            return $this->update_session($session_data);
+        }
+        
+    }
+
+
+    public function change_route_name($route_name)
+    {
+        $this->user_session_data["step_name"] = $route_name;
+        $this->user_session_data["current_step"] = 0;
+        $this->user_session_data["form_counter"] = 0;
+
+        $this->update_session($this->user_session_data);
+    }
+
     
 
     public function run_action_session($action="")

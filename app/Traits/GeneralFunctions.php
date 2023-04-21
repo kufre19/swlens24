@@ -27,6 +27,16 @@ trait GeneralFunctions
         $this->update_session($this->user_session_data);
     }
 
+
+    public function go_to_next_step_on_form($value = "")
+    {
+        $session = $this->user_session_data;
+        $current_step_count = $session['form_counter'];
+        $current_step_count += 1;
+        $this->user_session_data['form_counter'] = $current_step_count;
+        $this->update_session($this->user_session_data);
+    }
+
     public function go_to_previous_step($value = "")
     {
         $session = $this->user_session_data;
@@ -43,31 +53,7 @@ trait GeneralFunctions
         $this->go_to_next_step();
         die;
     }
-    /**
-     * send a constructed message to user as response
-     * @param mixed $value contains the message
-     * @param int optional $go_to_next_step let bot know to continue, enter 0 to go back to previous step
-     * 
-     */
-    public function say_to_user($value = "",$go_to_next_step=1)
-    {
-        $message = $this->make_text_message($value);
-        $this->send_post_curl($message);
-        if($go_to_next_step == 1)
-        {
-            $this->go_to_next_step();
-        }elseif ($go_to_next_step == 0){
-            $this->go_to_previous_step();
-            $this->continue_session_step();
-
-        }elseif ($go_to_next_step == 2){
-            $this->go_to_next_step();
-            die;
-        }else{
-            die;
-        }
-    }
-
+    
    
 
     public function store_answer($value = "")
@@ -91,8 +77,8 @@ trait GeneralFunctions
         $key = $value['store_as'];
         $this->user_session_data['answered_questions'][$key] = $user_response;
         $this->update_session($this->user_session_data);
-        $this->go_to_next_step();
-        $this->continue_session_step();
+        // $this->go_to_next_step();
+        // $this->continue_session_step();
     }
 
   

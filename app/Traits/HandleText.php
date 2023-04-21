@@ -19,7 +19,7 @@ trait HandleText
         if ($this->text_intent == "greetings") {
             $this->send_greetings_message($this->userphone);
             $main_ability = new Main();
-            $main_ability->GetScheduleMenu();
+            $main_ability->begin_func();
             $this->run_action_session();
         }
         if ($this->text_intent == "run_action_steps") {
