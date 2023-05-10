@@ -43,7 +43,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         $user = $user_model->where("whatsapp_id", $this->userphone)->first();
 
         if ($user['name'] == "" && $user['country'] == "" && $user['city'] == "" && $user["number"] == "") {
-            $str = "You have no settings to update please respond to the questions  correctly to create your account settings";
+            $str = "You have no settings to update, please respond to the questions  correctly to create your account settings";
             $message = $this->make_text_message($str);
             $this->send_post_curl($message);
             $this->go_to_next_step();
@@ -74,7 +74,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                 $ask_qs = 1;
                 break;
             case "1":
-                $this->store_answer(["store_as" => "name"]);
+                $this->storeAnswerToSession(["store_as" => "name"]);
                 break;
             case "2":
                 $qs = "Please enter your number:";
@@ -83,7 +83,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
 
                 break;
             case "3":
-                $this->store_answer(["store_as" => "number"]);
+                $this->storeAnswerToSession(["store_as" => "number"]);
                 break;
             case "4":
                 $qs = "Please enter your country:";
@@ -92,7 +92,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
 
                 break;
             case "5":
-                $this->store_answer(["store_as" => "country"]);
+                $this->storeAnswerToSession(["store_as" => "country"]);
                 break;
             case "6":
                 $qs = "Please enter your city:";
@@ -100,7 +100,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                 $ask_qs = 1;
                 break;
             case "7":
-                $this->store_answer(["store_as" => "city"]);
+                $this->storeAnswerToSession(["store_as" => "city"]);
                 break;
             case "8":
                 $qs = "Please select your prefered language:";
@@ -127,7 +127,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                 {
                     $this->user_message_original = "es";
                 }
-                $this->store_answer(["store_as" => "lang"]);
+                $this->storeAnswerToSession(["store_as" => "lang"]);
                 break;
             default:
                 # code...
@@ -137,7 +137,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         if($form_counter == 10)
         {
             // now store data to db and send back the info to user and send back main menu
-            $this->save_settings_to_db();
+            $this->saveUserSettingsToDb();
             $this->show_settings();
             $this->backToMainMenu();
             // $this->go_to_next_step();
@@ -170,20 +170,11 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         $this->send_post_curl($message);
     }
 
-    public function save_settings_to_db()
+    
+
+
+    public static function runThisFunctionAnon()
     {
-        $user_model = new WaUser();
-        $stored_answers = $this->user_session_data['answered_questions'];
-
-        $user_model->where("whatsapp_id",$this->userphone)->update([
-
-            "name"=>$stored_answers['name'],
-            "number"=>$stored_answers['number'],
-            "country"=>$stored_answers['country'],
-            "city"=>$stored_answers['city'],
-            "lang"=>$stored_answers['lang'],
-
-        ]);
-
+        
     }
 }

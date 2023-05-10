@@ -39,13 +39,13 @@ $session_data = [
 trait CreateActionsSession
 {
 
-    use HandleSession;
+    
 
 
     public function getUserData()
     {
         $session_data = [
-            "step_name"=>"getUserData",
+            "step_name"=>"Main",
             "answered_questions" => [],
             "run_action_step"=>1,
             "current_step" => 0,

@@ -13,19 +13,25 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 {
 
 
-    public $steps = ["GetScheduleMenu", "check_for_selection", "get_event_schedule"];
+    public $steps = ["askForEventDate", "ValidateDate", "get_event_schedule"];
 
     private $method_map = array();
 
 
     public function begin_func()
     {
-        $sch_menu_model = new ScheduleMenu();
-        $menu_data = $sch_menu_model->get();
-        $TextMenu_obj = new TextMenuSelection($menu_data);
+        // $sch_menu_model = new ScheduleMenu();
+        // $menu_data = $sch_menu_model->get();
+        // $TextMenu_obj = new TextMenuSelection($menu_data);
+        // $this->set_session_route("GetEvents");
+        // $this->go_to_next_step();
+        // $TextMenu_obj->send_menu_to_user();
+
+        // firdt send buttom message to user to ask for date they want to check which is now or future date
+        $this->askForEventDate();
         $this->set_session_route("GetEvents");
         $this->go_to_next_step();
-        $TextMenu_obj->send_menu_to_user();
+        $this->ResponsedWith200();
         
     }
 
@@ -61,6 +67,12 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     public function perform_selection()
     {
         
+    }
+
+    public function ValidateDate()
+    {
+        // validate and retrun false if date given is fasle 
+        return true;
     }
 
 
@@ -128,5 +140,23 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         } else {
             return null;
         }
+    }
+
+
+    public function askForEventDate()
+    {
+        $sample_date = date("d/m/Y");
+        $message = "Please enter a date for event schedule you want to check! i.e {$sample_date}";
+        $message_obj = $this->make_text_message($message,$this->userphone);
+        $this->send_post_curl($message_obj);
+
+
+
+
+    }
+
+    public static function runThisFunctionAnon()
+    {
+        
     }
 }

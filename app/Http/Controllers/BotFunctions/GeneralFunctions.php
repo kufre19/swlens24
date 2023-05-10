@@ -3,6 +3,7 @@ namespace App\Http\Controllers\BotFunctions;
 
 use App\Http\Controllers\BotAbilities\Main;
 use App\Http\Controllers\BotController;
+use App\Models\WaUser;
 use Illuminate\Http\Request;
 use stdClass;
 
@@ -64,6 +65,24 @@ class GeneralFunctions extends BotController {
     {
         $main_obj = new Main;
         $main_obj->begin_func();
+    }
+
+
+    public function saveUserSettingsToDb()
+    {
+        $user_model = new WaUser();
+        $stored_answers = $this->user_session_data['answered_questions'];
+
+        $user_model->where("whatsapp_id",$this->userphone)->update([
+
+            "name"=>$stored_answers['name'],
+            "number"=>$stored_answers['number'],
+            "country"=>$stored_answers['country'],
+            "city"=>$stored_answers['city'],
+            "lang"=>$stored_answers['lang'],
+
+        ]);
+
     }
 
     

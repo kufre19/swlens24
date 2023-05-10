@@ -12,6 +12,7 @@ trait HandleSession
 {
    
     public static $EXPECTED_RESPONSES = "expected_response";
+    
 
     /*
     Session codes
@@ -22,6 +23,8 @@ trait HandleSession
     the 'continuation' field represenmts a command that should be continued after an action
     
     */
+
+
 
 
 
@@ -128,6 +131,11 @@ trait HandleSession
         $this->update_session($this->user_session_data);
 
     }
+    
+    /**
+     * this will continue a command given to the bot not a series of action
+     * 
+     */
 
     public function continue_session_command()
     {
@@ -139,6 +147,9 @@ trait HandleSession
 
     }
 
+    /**
+     * this will continue whatever session activity(series of action) that's going on
+     */
     public function continue_session_step($action="")
     {
         $this->run_action_session();
@@ -194,7 +205,7 @@ trait HandleSession
                 "current_step" => 0,
                 "next_step" => 1,
                 "last_operation_status"=>0,
-                "form_counter"=>0
+                "form_counter"=>0,
                
             ];
     
@@ -202,6 +213,7 @@ trait HandleSession
         }
         
     }
+
 
 
     public function change_route_name($route_name)
@@ -218,7 +230,8 @@ trait HandleSession
     public function run_action_session($action="")
     {
         $session = $this->user_session_data;
-        $current_step_count = $session['current_step'];
+        info(json_encode($session));
+        // $current_step_count = $session['current_step'];
         // $current_step_to_run = $session['steps'][$current_step_count];
         // $current_action_type = $current_step_to_run['action_type'];
         // $current_action_value = $current_step_to_run['value'];

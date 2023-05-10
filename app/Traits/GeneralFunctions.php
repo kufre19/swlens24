@@ -56,7 +56,7 @@ trait GeneralFunctions
     
    
 
-    public function store_answer($value = "")
+    public function storeAnswerToSession($value = "")
     {
         if (isset($value['expect'])) {
 
