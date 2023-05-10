@@ -28,8 +28,8 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         // $TextMenu_obj->send_menu_to_user();
 
         // firdt send buttom message to user to ask for date they want to check which is now or future date
-        $this->askForEventDate();
         $this->set_session_route("GetEvents");
+        $this->askForEventDate();
         $this->go_to_next_step();
         $this->ResponsedWith200();
         
@@ -149,9 +149,6 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         $message = "Please enter a date for event schedule you want to check! i.e {$sample_date}";
         $message_obj = $this->make_text_message($message,$this->userphone);
         $this->send_post_curl($message_obj);
-
-
-
 
     }
 

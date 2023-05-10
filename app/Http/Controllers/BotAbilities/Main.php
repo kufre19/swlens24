@@ -50,7 +50,7 @@ class Main extends BotFunctionsGeneralFunctions implements AbilityInterface
         if($response == "1" || $response == "Check Events")
         {
             $EventObj = new GetEvents;
-            $this->change_route_name(get_class($EventObj));
+            $this->change_route_name("GetEvents");
             $EventObj->begin_func();
             $this->ResponsedWith200();
 
