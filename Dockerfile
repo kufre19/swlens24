@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     g++
 
 RUN  docker-php-ext-install mysqli pdo pdo_mysql
+RUN umask 000
 
 
 
