@@ -12,8 +12,11 @@ use App\Models\ScheduleMenu;
 class GetEvents extends GeneralFunctions implements AbilityInterface
 {
 
+    const SPECIFIC_EVENT = "specific_event";
+    const NEEDED_EVENT_DATE  = "needed_event_date";
 
-    public $steps = ["askForEventDate", "ValidateDate", "get_event_schedule"];
+
+    public $steps = ["askForEventDate", "ValidateDate", "askForSpecificEvent", "getEvent"];
 
     private $method_map = array();
 
@@ -32,7 +35,6 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         $this->askForEventDate();
         $this->go_to_next_step();
         $this->ResponsedWith200();
-        
     }
 
 
@@ -43,7 +45,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     }
 
 
-   
+
     public function get_event_schedule()
     {
         $event = "Event is at 12pm";
@@ -66,23 +68,26 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
     public function perform_selection()
     {
-        
-    }
-
-    public function ValidateDate()
-    {
-        // validate and retrun false if date given is fasle 
-        return true;
     }
 
 
 
-    public static function getEvent($params)
+
+    public function getEvent($params = [])
     {
+        // first store any specific event needed by user
+        $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
+
         // Set the URL endpoint
-        $url = "https://www.hebcal.com/hebcal?v=1&cfg=json";
+        $url = "https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&il=es";
 
-        // Loop through the parameters and add them to the URL
+        // Add the current date to the URL as the default value for the "date" parameter
+        $url .= "&date=" . urlencode(date($this->user_session_data['answered_questions'][self::NEEDED_EVENT_DATE]));
+
+        // Add the city parameter to the URL
+        $url .= "&city=Madrid";
+
+        // Loop through any additional parameters and add them to the URL
         foreach ($params as $key => $value) {
             $url .= "&" . $key . "=" . urlencode($value);
         }
@@ -101,7 +106,18 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         curl_close($ch);
 
         // Return the response
-        return json_decode($response, true);
+        return info($response) ;
+    }
+
+
+
+    public function askForSpecificEvent()
+    {
+        $message = "Any specific event in mind?";
+        $message_obj = $this->make_text_message($message, $this->userphone);
+        $this->send_post_curl($message_obj);
+        $this->go_to_next_step();
+        $this->ResponsedWith200();
     }
 
     // public function test()
@@ -147,13 +163,19 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     {
         $sample_date = date("d/m/Y");
         $message = "Please enter a date for event schedule you want to check! i.e {$sample_date}";
-        $message_obj = $this->make_text_message($message,$this->userphone);
+        $message_obj = $this->make_text_message($message, $this->userphone);
         $this->send_post_curl($message_obj);
-
     }
+
+    public function ValidateDate()
+    {
+        // validate and retrun false if date given is fasle 
+        $this->storeAnswerToSession(["store_as" => self::NEEDED_EVENT_DATE]);
+        return true;
+    }
+
 
     public static function runThisFunctionAnon()
     {
-        
     }
 }
