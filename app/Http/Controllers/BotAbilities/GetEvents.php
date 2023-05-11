@@ -133,32 +133,37 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         // try to use regex to find a specific event else display the rest
         if (!empty($events)) {
             $matchingEvents = [];
-            if ($this->user_session_data['answered_questions'][self::SPECIFIC_EVENT] != "") {
+            if ($this->user_session_data['answered_questions'][self::SPECIFIC_EVENT] != "") 
+            {
                 $specified = $this->user_session_data['answered_questions'][self::SPECIFIC_EVENT];
-                info($specified);
                 foreach ($events as $item) {
                     $title = $item['title'];
                     if (preg_match("/\b$specified\b/i", $title)) {
                         array_push($matchingEvents, $item);
                     }
                 }
+            }else {
+                // this will just go ahead and make sure events are available for sending if specific is empty
+               $matchingEvents = $events;
             }
         } else {
-            // tell user  that event not found for date given and end chat!
+            $text = "Sorry no events matched for either date provided or event specified!";
+            $message = $this->make_text_message($text, $this->userphone);
+            $this->send_post_curl($message);
         }
 
 
 
         // Return the response
         curl_close($ch);
-        if(!empty($matchingEvents))
+        if(!empty($matchingEvents) )
         {
             $this->showUserEvents($matchingEvents);
         }else {
             $text = "Sorry no events matched the one you specified but please see events for the date provided";
             $message = $this->make_text_message($text, $this->userphone);
             $this->send_post_curl($message);
-            $this->showUserEvents($events);
+            $this->showUserEvents($matchingEvents);
 
         }
 
