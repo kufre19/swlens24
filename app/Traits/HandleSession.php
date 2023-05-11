@@ -230,11 +230,6 @@ trait HandleSession
     public function run_action_session($action="")
     {
         $session = $this->user_session_data;
-        info(json_encode($session));
-        // $current_step_count = $session['current_step'];
-        // $current_step_to_run = $session['steps'][$current_step_count];
-        // $current_action_type = $current_step_to_run['action_type'];
-        // $current_action_value = $current_step_to_run['value'];
 
         $namespace = '\App\Http\Controllers\BotAbilities\\';
         $class_name = $session['step_name'];
