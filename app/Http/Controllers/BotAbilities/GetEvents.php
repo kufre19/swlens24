@@ -15,7 +15,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     const NEEDED_EVENT_DATE  = "needed_event_date";
 
 
-    public $steps = ["askForEventDate", "ValidateDate", "askForSpecificEvent", "getEvent"];
+    public $steps = ["askForEventDate", "ValidateDate", "askForSpecificEvent","validateSpecificEvent", "getEvent"];
 
     private $method_map = array();
 
@@ -87,8 +87,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
     public function getEvent($params = [])
     {
-        // first store any specific event needed by user
-        $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
+       
         $user = $this->getUSerData();
 
         // Set the URL endpoint
@@ -198,7 +197,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
     public function askForSpecificEvent()
     {
-        $message = "Any specific event in mind ?";
+        $message = "please enter a specific event if you have any in mind, or simply type 'no'";
         $message_obj = $this->make_text_message($message, $this->userphone);
         $this->send_post_curl($message_obj);
         $this->go_to_next_step();
@@ -211,7 +210,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     public function askForEventDate()
     {
         $sample_date = date("Y-m-d");
-        $message = "Please enter a date for event schedule you want to check! i.e {$sample_date}";
+        $message = "Please enter a date for event schedule you want to check in the given format! i.e {$sample_date}";
         $message_obj = $this->make_text_message($message, $this->userphone);
         $this->send_post_curl($message_obj);
     }
@@ -236,6 +235,21 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         if ($valid) {
 
             $this->storeAnswerToSession(["store_as" => self::NEEDED_EVENT_DATE]);
+            $this->go_to_next_step();
+            $this->continue_session_step();
+        }
+    }
+
+    public function validateSpecificEvent ()
+    {
+        $intent = ["no","nope",];
+
+        if(in_array($this->user_message_lowered,$intent))
+        {
+            $this->user_message_original = "";
+        }else{
+             // first store any specific event needed by user
+            $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
             $this->go_to_next_step();
             $this->continue_session_step();
         }
