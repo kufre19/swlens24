@@ -77,6 +77,11 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         // check if required data are available 
         if ($user->city == "") {
             // go and ask user to register the info
+            $text = "Please update your settings to continue!";
+            $message = $this->make_text_message($text, $this->userphone);
+            $this->send_post_curl($message);
+            $updateSettingsAbility = new UpdateUserSettings();
+            $updateSettingsAbility->begin_func();
         }
 
         return $user;
