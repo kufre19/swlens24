@@ -55,6 +55,9 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
             // just show settings and then call method do start 
             $this->show_settings();
             $this->go_to_next_step();
+            $message = "you can skip any info you don't want to update by typing 'skip' or 'no' ";
+            $message_obj = $this->make_text_message($message, $this->userphone);
+            $this->send_post_curl($message_obj);
             $this->update_settings();
 
         }
@@ -66,6 +69,16 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         // form
         $form_counter = $this->user_session_data['form_counter'];
         $ask_qs = 0;
+        if(isset($this->user_message_lowered))
+        {
+            if($this->user_message_lowered == "no" || $this->user_message_lowered == "skip")
+            {
+                $this->go_to_next_step_on_form();
+                $ask_qs = 1;
+                return $this->continue_session_step();
+            }
+        }
+       
         switch ($form_counter) {
             case '0':
 
