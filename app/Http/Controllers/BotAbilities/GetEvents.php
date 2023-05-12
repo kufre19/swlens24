@@ -247,7 +247,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
     public function validateSpecificEvent ()
     {
-        $intent = ["no","nope",];
+        $intent = ["no","nope","nop"];
 
         if(in_array($this->user_message_lowered,$intent))
         {
