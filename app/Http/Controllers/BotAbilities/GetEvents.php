@@ -251,7 +251,12 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
         if(in_array($this->user_message_lowered,$intent))
         {
+        info("was here1");
+
             $this->user_message_original = "";
+            $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
+            $this->go_to_next_step();
+            $this->continue_session_step();
         }else{
              // first store any specific event needed by user
             $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
