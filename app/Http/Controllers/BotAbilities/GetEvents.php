@@ -15,7 +15,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
     const NEEDED_EVENT_DATE  = "needed_event_date";
 
 
-    public $steps = ["askForEventDate", "ValidateDate", "askForSpecificEvent","validateSpecificEvent", "getEvent"];
+    public $steps = ["askForEventDate", "ValidateDate", "askForSpecificEvent", "validateSpecificEvent", "getEvent"];
 
     private $method_map = array();
 
@@ -87,7 +87,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
 
     public function getEvent($params = [])
     {
-       
+
         $user = $this->getUSerData();
 
         // Set the URL endpoint
@@ -123,48 +123,53 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
         // Close the cURL session
 
         $arrayed_response = json_decode($response, true);
-      
+
 
 
         $events = $arrayed_response['items'];
-        
+
 
 
         // try to use regex to find a specific event else display the rest
         if (!empty($events)) {
             $matchingEvents = [];
-            if ($this->user_session_data['answered_questions'][self::SPECIFIC_EVENT] != "") 
-            {
+            if ($this->user_session_data['answered_questions'][self::SPECIFIC_EVENT] != "") {
+
                 $specified = $this->user_session_data['answered_questions'][self::SPECIFIC_EVENT];
                 foreach ($events as $item) {
                     $title = $item['title'];
                     if (preg_match("/\b$specified\b/i", $title)) {
                         array_push($matchingEvents, $item);
                     }
+
+                    if (empty($matchingEvents)) {
+                // this will just go ahead and make sure events are available for sending if no match  with specific is found
+
+                        $matchingEvents = $events;
+                    }
                 }
-            }else {
+            } else {
                 // this will just go ahead and make sure events are available for sending if specific is empty
-               $matchingEvents = $events;
+                $matchingEvents = $events;
             }
         } else {
             $text = "Sorry no events matched for either date provided or event specified!";
             $message = $this->make_text_message($text, $this->userphone);
             $this->send_post_curl($message);
+            $this->ResponsedWith200();
         }
 
 
 
         // Return the response
         curl_close($ch);
-        if(!empty($matchingEvents) )
-        {
+        if (!empty($matchingEvents)) {
             $this->showUserEvents($matchingEvents);
-        }else {
+        } else {
             $text = "Sorry no events matched the one you specified but please see events for the date provided";
             $message = $this->make_text_message($text, $this->userphone);
             $this->send_post_curl($message);
             $this->showUserEvents($matchingEvents);
-
         }
 
         return $this->ResponsedWith200();
@@ -182,7 +187,7 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
             $pos = strpos($event['title'], ':');
             if ($pos !== false) {
                 $title = substr($event['title'], 0, $pos);
-            }else{
+            } else {
                 $title = $event['title'];
             }
             $text .= "Event: {$title} {$memo}" . PHP_EOL;
@@ -242,23 +247,27 @@ class GetEvents extends GeneralFunctions implements AbilityInterface
             $this->storeAnswerToSession(["store_as" => self::NEEDED_EVENT_DATE]);
             $this->go_to_next_step();
             $this->continue_session_step();
+        } else {
+            $sample_date = date("Y-m-d");
+            $message = "Please enter a date for event schedule you want to check in the given format! i.e {$sample_date}";
+            $message_obj = $this->make_text_message($message, $this->userphone);
+            $this->send_post_curl($message_obj);
+            $this->ResponsedWith200();
         }
     }
 
-    public function validateSpecificEvent ()
+    public function validateSpecificEvent()
     {
-        $intent = ["no","nope","nop"];
+        $intent = ["no", "nope", "nop"];
 
-        if(in_array($this->user_message_lowered,$intent))
-        {
-        info("was here1");
+        if (in_array($this->user_message_lowered, $intent)) {
 
             $this->user_message_original = "";
             $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
             $this->go_to_next_step();
             $this->continue_session_step();
-        }else{
-             // first store any specific event needed by user
+        } else {
+            // first store any specific event needed by user
             $this->storeAnswerToSession(["store_as" => self::SPECIFIC_EVENT]);
             $this->go_to_next_step();
             $this->continue_session_step();
