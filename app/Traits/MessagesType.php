@@ -21,6 +21,8 @@ trait MessagesType {
 
     public function make_text_message($text,$to="",$preview_url=false)
     {
+        $text = $this->getLanguageTrans($text);
+        
         if($to == "")
         {
             $to = (string)$this->userphone;

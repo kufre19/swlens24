@@ -83,6 +83,7 @@ class GeneralFunctions extends BotController {
             "lang"=>$stored_answers['lang'],
 
         ]);
+        
 
     }
 

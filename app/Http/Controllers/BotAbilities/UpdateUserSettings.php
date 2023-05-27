@@ -194,7 +194,7 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                 break;
         }
 
-        if($form_counter == 9)
+        if($form_counter > 8)
         {
             // now store data to db and send back the info to user and send back main menu
             $this->saveUserSettingsToDb();
