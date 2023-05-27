@@ -69,9 +69,7 @@ class TextMenuSelection extends GeneralFunctions
         if (!in_array($response, $this->expected_responses)) {
             info($response);
             $message = "Please select from the menu given!";
-            $text = $this->make_text_message($message);
-            $send = $this->send_post_curl($text);
-            $this->send_menu_to_user();
+            $this->send_menu_to_user($message);
             return $this->ResponsedWith200();
         }
 
