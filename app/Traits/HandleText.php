@@ -6,6 +6,7 @@ use App\Http\Controllers\BotAbilities\Main;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 trait HandleText
 {
@@ -65,7 +66,24 @@ trait HandleText
     }
 
 
+    public function getLanguageTrans($text)
+    {
+        $language = $this->user_session_data['language'] ?? "";
 
+        if($language =="")
+        {
+            return $text;
+        }
+        if($language != "en"){
+            $googleTrans = new GoogleTranslate();
+            $result = $googleTrans->setTarget($language)->translate($text);
+            return $result;
+        }else{
+            return $text;
+        }
+        
+
+    }
 
     public function  runtest(array $data)
     {

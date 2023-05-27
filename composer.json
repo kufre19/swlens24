@@ -12,7 +12,8 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "munafio/chatify": "^1.6",
-        "orchid/platform": "^11.0"
+        "orchid/platform": "^11.0",
+        "stichoza/google-translate-php": "^5.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

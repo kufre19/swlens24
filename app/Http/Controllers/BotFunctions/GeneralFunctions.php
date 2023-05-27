@@ -6,6 +6,7 @@ use App\Http\Controllers\BotController;
 use App\Models\WaUser;
 use Illuminate\Http\Request;
 use stdClass;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 
 class GeneralFunctions extends BotController {
@@ -82,6 +83,25 @@ class GeneralFunctions extends BotController {
             "lang"=>$stored_answers['lang'],
 
         ]);
+
+    }
+
+    public function getLanguageTrans($text)
+    {
+        $language = $this->user_session_data['language'] ?? "";
+
+        if($language =="")
+        {
+            return $text;
+        }
+        if($language != "en"){
+            $googleTrans = new GoogleTranslate();
+            $result = $googleTrans->setTarget($language)->translate($text);
+            return $result;
+        }else{
+            return $text;
+        }
+        
 
     }
 
