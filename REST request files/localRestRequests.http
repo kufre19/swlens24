@@ -20,7 +20,7 @@ Content-Type: application/json
                                 "profile": {
                                     "name": "Maxwell"
                                 },
-                                "wa_id": "2349057619869"
+                                "wa_id": "2347016791512"
                             }
                         ],
                         "messages": [
@@ -29,7 +29,7 @@ Content-Type: application/json
                                 "id": "wamid.HBgNMjM0NzAxNjc5MTUxMhUCABIYFDNFQjBBMTY3NzEwQTBEQzkzRjgxAA==",
                                 "timestamp": "1663025478",
                                 "text": {
-                                    "body": "hi"
+                                    "body": "no"
                                 },
                                 "type": "text"
                             }

@@ -69,53 +69,96 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         // form
         $form_counter = $this->user_session_data['form_counter'];
         $ask_qs = 0;
+        $skip = false;
         if(isset($this->user_message_lowered))
         {
             if($this->user_message_lowered == "no" || $this->user_message_lowered == "skip")
             {
-                $this->go_to_next_step_on_form();
-                $ask_qs = 1;
-                return $this->continue_session_step();
+               $skip = true;
             }
         }
        
         switch ($form_counter) {
             case '0':
+                if($skip)
+                {                    
+                    break;
+                }
 
                 $qs = "Please enter your name:";
                 $this->message_user($qs, $this->userphone);
                 $ask_qs = 1;
                 break;
             case "1":
+                if($skip)
+                {
+                    break;
+                }
+
                 $this->storeAnswerToSession(["store_as" => "name"]);
                 break;
             case "2":
+                if($skip)
+                {
+                    break;
+                }
+
                 $qs = "Please enter your number:";
                 $this->message_user($qs, $this->userphone);
                 $ask_qs = 1;
 
                 break;
             case "3":
+                if($skip)
+                {
+                    break;
+                }
+
                 $this->storeAnswerToSession(["store_as" => "number"]);
                 break;
             case "4":
+                if($skip)
+                {
+                    break;
+                }
+
                 $qs = "Please enter your country:";
                 $this->message_user($qs, $this->userphone);
                 $ask_qs = 1;
 
                 break;
             case "5":
+                if($skip)
+                {
+                    break;
+                }
+
                 $this->storeAnswerToSession(["store_as" => "country"]);
                 break;
             case "6":
+                if($skip)
+                {
+                    break;
+                }
+
                 $qs = "Please enter your city:";
                 $this->message_user($qs, $this->userphone);
                 $ask_qs = 1;
                 break;
             case "7":
+                if($skip)
+                {
+                    break;
+                }
+
                 $this->storeAnswerToSession(["store_as" => "city"]);
                 break;
             case "8":
+                if($skip)
+                {
+                    break;
+                }
+
                 $qs = "Please select your prefered language:";
                 $this->message_user($qs, $this->userphone);
                 $item =  ["English","Espaniol"];
@@ -125,13 +168,16 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                 $ask_qs = 1;
                 break;
             case "9":
+                if($skip)
+                {
+                    break;
+                }
+
                 $item =  ["English","Espaniol"];
                 $objMenu = $this->MenuArrayToObj($item);
                 $menu = new TextMenuSelection($objMenu);
                 $menu->check_expected_response($this->user_message_original);
-                
-                break;
-            case "10":
+
                 if($this->user_message_original == "1" || $this->user_message_original == "English")
                 {
                     $this->user_message_original = "en";
@@ -141,13 +187,14 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
                     $this->user_message_original = "es";
                 }
                 $this->storeAnswerToSession(["store_as" => "lang"]);
+                
                 break;
             default:
                 # code...
                 break;
         }
 
-        if($form_counter == 10)
+        if($form_counter == 9)
         {
             // now store data to db and send back the info to user and send back main menu
             $this->saveUserSettingsToDb();
@@ -155,8 +202,14 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
             $this->backToMainMenu();
             // $this->go_to_next_step();
         }else{
+            if($skip)
+            {
+                $this->go_to_next_step_on_form();
+                $this->continue_session_step();
+            }
 
             $this->go_to_next_step_on_form();
+        
             if($ask_qs == 1)
             {
                 $this->ResponsedWith200();
@@ -182,6 +235,8 @@ class UpdateUserSettings extends GeneralFunctions implements AbilityInterface
         $message = $this->make_text_message($text,$this->userphone);
         $this->send_post_curl($message);
     }
+
+    
 
     
 

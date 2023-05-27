@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Http\Controllers\BotAbilities\Main;
 use App\Models\User;
+use App\Models\WaUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Stichoza\GoogleTranslate\GoogleTranslate;
