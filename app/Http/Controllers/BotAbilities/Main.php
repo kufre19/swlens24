@@ -12,6 +12,7 @@ class Main extends BotFunctionsGeneralFunctions implements AbilityInterface
 {
 
     public $steps = ["begin_func", "check_for_selection", "perform_selection"];
+    public $menu_items_arr = ["Check Events", "Update Settings"];
 
 
 
@@ -19,12 +20,12 @@ class Main extends BotFunctionsGeneralFunctions implements AbilityInterface
     {
         // echo"loozp";
 
-        $menu_items_arr = ["Check Events", "Update Settings"];
-       $obj = $this->MenuArrayToObj($menu_items_arr);
+        
+       $obj = $this->MenuArrayToObj($this->menu_items_arr);
 
 
         $menu = new TextMenuSelection($obj);
-        $menu->send_menu_to_user();
+        $menu->send_menu_to_user("Select from our main menu");
         $this->set_session_route("Main");
         $this->go_to_next_step();
         $this->ResponsedWith200();
@@ -32,8 +33,9 @@ class Main extends BotFunctionsGeneralFunctions implements AbilityInterface
 
     public function check_for_selection()
     {
-        $sch_menu_model = new ScheduleMenu();
-        $menu_data = $sch_menu_model->get();
+       
+        $menu_data = $this->menu_items_arr;
+        $menu_data = $this->MenuArrayToObj($menu_data);
         $TextMenu_obj = new TextMenuSelection($menu_data, $this->userphone, $this->username);
         $TextMenu_obj->check_expected_response($this->user_message_original);
 

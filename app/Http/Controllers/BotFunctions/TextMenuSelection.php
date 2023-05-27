@@ -26,9 +26,13 @@ class TextMenuSelection extends GeneralFunctions
 
 
     
-    public function send_menu_to_user()
+    public function send_menu_to_user($message ="")
     {
-        // echo $this->user
+         // echo $this->user
+         if($message == "")
+         {
+             $message = "Please select an option from the menu";
+         }
         
         $text = $this->make_text_message("Please select an option from the menu",$this->userphone);
         $send = $this->send_post_curl($text);
