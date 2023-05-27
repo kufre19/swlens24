@@ -88,10 +88,13 @@ class GeneralFunctions extends BotController {
 
     public function getLanguageTrans($text)
     {
-        $language = $this->user_session_data['language'] ?? "";
+        $userModel = new WaUser();
+        $user = $userModel->where("whatsapp_id",$this->userphone)->first();
+
+        $language =  $user->lang ?? $this->user_session_data['language'] ?? "";
 
         if($language =="")
-        {
+        { 
             return $text;
         }
         if($language != "en"){
